@@ -1,9 +1,9 @@
 package edu.miu.cs489.cs489iotdevicemgmt.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,13 +16,22 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Device {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne
-    private User user;
-    private String name;
-    private String serialNumber;
-    @OneToOne
-    private Address address;
 
+    @Column(nullable = false)
+    @NotEmpty
+    private String name;
+
+    @NotBlank(message = "Device serial number can not be empty!")
+    @Column(nullable = false, unique = true)
+    private String serialNumber;
+
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @OneToOne
+    @JoinColumn(name = "address_id")
+    private Address address;
 }

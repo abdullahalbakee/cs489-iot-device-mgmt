@@ -1,9 +1,8 @@
 package edu.miu.cs489.cs489iotdevicemgmt.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,10 +15,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class User {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
+    @NotEmpty
     private String firstName;
+
+    @Column(nullable = false)
+    @NotEmpty
     private String lastName;
+
     @OneToOne
+    @JoinColumn(name = "address_id")
+    @NotNull
     private Address address;
 }

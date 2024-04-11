@@ -53,5 +53,28 @@ public class Cs489IotDeviceMgmtApplication implements CommandLineRunner {
 				.build();
 		var createdDevice = deviceService.create(device1);
 		System.out.println(createdDevice);
+
+		var updatedDevice = device1;
+		updatedDevice.setSerialNumber("1122334455667788");
+		deviceService.update(updatedDevice.getId(), updatedDevice);
+
+		printAllDevices();
+		testAddressQueries();
+	}
+
+	private void printAllDevices() {
+		System.out.println("List of all devices");
+		System.out.println(deviceService.getAll());
+	}
+
+	private void testAddressQueries() {
+		System.out.println("Test JPQL");
+		System.out.println(addressService.getAllByCity("Fairfield"));
+
+		System.out.println("Test Native Query");
+		System.out.println(addressService.getAllByCityAndState("Fairfield", "IA"));
+
+		System.out.println("Test Method Query");
+		System.out.println(addressService.findByCountry("USA"));
 	}
 }
