@@ -1,5 +1,7 @@
 package edu.miu.cs489.cs489iotdevicemgmt.service;
 
+import edu.miu.cs489.cs489iotdevicemgmt.dto.AddressDto;
+import edu.miu.cs489.cs489iotdevicemgmt.mapper.AddressMapper;
 import edu.miu.cs489.cs489iotdevicemgmt.model.Address;
 import edu.miu.cs489.cs489iotdevicemgmt.repository.AddressRepository;
 import org.springframework.stereotype.Service;
@@ -15,8 +17,9 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public List<Address> getAll() {
-        return addressRepository.findAll();
+    public List<AddressDto> getAll() {
+        var addresses = addressRepository.findAll();
+        return convertToDto(addresses);
     }
 
     @Override
@@ -56,5 +59,7 @@ public class AddressServiceImpl implements AddressService {
         return addressRepository.findById(addressId).orElse(null);
     }
 
-
+    private static List<AddressDto> convertToDto(List<Address> addresses) {
+        return addresses.stream().map(AddressMapper.INSTANCE::addressToAddressDto).toList();
+    }
 }
