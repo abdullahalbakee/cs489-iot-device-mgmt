@@ -1,6 +1,8 @@
 package edu.miu.cs489.cs489iotdevicemgmt.service;
 
 import edu.miu.cs489.cs489iotdevicemgmt.dto.AddressDto;
+import edu.miu.cs489.cs489iotdevicemgmt.dto.AddressRequest;
+import edu.miu.cs489.cs489iotdevicemgmt.exception.ResourceNotFoundException;
 import edu.miu.cs489.cs489iotdevicemgmt.mapper.AddressMapper;
 import edu.miu.cs489.cs489iotdevicemgmt.model.Address;
 import edu.miu.cs489.cs489iotdevicemgmt.repository.AddressRepository;
@@ -23,21 +25,31 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public Address create(Address address) {
-        return addressRepository.save(address);
+    public AddressDto create(AddressRequest addressRequest) {
+        var address = AddressMapper.INSTANCE.addressRequestToAddress(addressRequest);
+        var savedAddress = addressRepository.save(address);
+        return AddressMapper.INSTANCE.addressToAddressDto(savedAddress);
     }
 
     @Override
-    public Address update(Address address) {
-        return addressRepository.save(address);
-    }
-
-    @Override
-    public boolean delete(Long addressId) {
+    public AddressDto update(Long addressId, AddressRequest address) {
         var existingAddress = getAddressById(addressId);
-        if(existingAddress == null) return false;
+        if(existingAddress == null) {
+            throw new ResourceNotFoundException("Address not found with address id: " + addressId);
+        }
+        var addressModel = AddressMapper.INSTANCE.addressRequestToAddress(address);
+        addressModel.setId(addressId);
+        var updatedAddress = addressRepository.save(addressModel);
+        return AddressMapper.INSTANCE.addressToAddressDto(updatedAddress);
+    }
+
+    @Override
+    public void delete(Long addressId) {
+        var existingAddress = getAddressById(addressId);
+        if(existingAddress == null) {
+            throw new ResourceNotFoundException("Address not found with address id: " + addressId);
+        }
         addressRepository.deleteById(addressId);
-        return true;
     }
 
     @Override
