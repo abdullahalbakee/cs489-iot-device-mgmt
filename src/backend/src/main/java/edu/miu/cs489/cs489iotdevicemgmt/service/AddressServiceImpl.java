@@ -1,7 +1,7 @@
 package edu.miu.cs489.cs489iotdevicemgmt.service;
 
 import edu.miu.cs489.cs489iotdevicemgmt.dto.AddressDto;
-import edu.miu.cs489.cs489iotdevicemgmt.dto.AddressRequest;
+import edu.miu.cs489.cs489iotdevicemgmt.dto.AddressRequestDto;
 import edu.miu.cs489.cs489iotdevicemgmt.exception.ResourceNotFoundException;
 import edu.miu.cs489.cs489iotdevicemgmt.mapper.AddressMapper;
 import edu.miu.cs489.cs489iotdevicemgmt.model.Address;
@@ -25,14 +25,14 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public AddressDto create(AddressRequest addressRequest) {
-        var address = AddressMapper.INSTANCE.addressRequestToAddress(addressRequest);
+    public AddressDto create(AddressRequestDto addressRequestDto) {
+        var address = AddressMapper.INSTANCE.addressRequestToAddress(addressRequestDto);
         var savedAddress = addressRepository.save(address);
         return AddressMapper.INSTANCE.addressToAddressDto(savedAddress);
     }
 
     @Override
-    public AddressDto update(Long addressId, AddressRequest address) {
+    public AddressDto update(Long addressId, AddressRequestDto address) {
         var existingAddress = getAddressById(addressId);
         if(existingAddress == null) {
             throw new ResourceNotFoundException("Address not found with address id: " + addressId);
