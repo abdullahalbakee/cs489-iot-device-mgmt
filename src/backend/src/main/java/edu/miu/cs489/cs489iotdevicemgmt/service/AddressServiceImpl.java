@@ -26,18 +26,18 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public AddressDto create(AddressRequestDto addressRequestDto) {
-        var address = AddressMapper.INSTANCE.addressRequestToAddress(addressRequestDto);
+        var address = AddressMapper.INSTANCE.addressRequestDtoToAddress(addressRequestDto);
         var savedAddress = addressRepository.save(address);
         return AddressMapper.INSTANCE.addressToAddressDto(savedAddress);
     }
 
     @Override
-    public AddressDto update(Long addressId, AddressRequestDto address) {
+    public AddressDto update(Long addressId, AddressRequestDto addressDto) {
         var existingAddress = getAddressById(addressId);
         if(existingAddress == null) {
-            throw new ResourceNotFoundException("Address not found with address id: " + addressId);
+            throw new ResourceNotFoundException("Address not found with addressDto id: " + addressId);
         }
-        var addressModel = AddressMapper.INSTANCE.addressRequestToAddress(address);
+        var addressModel = AddressMapper.INSTANCE.addressRequestDtoToAddress(addressDto);
         addressModel.setId(addressId);
         var updatedAddress = addressRepository.save(addressModel);
         return AddressMapper.INSTANCE.addressToAddressDto(updatedAddress);

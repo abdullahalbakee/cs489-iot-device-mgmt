@@ -1,17 +1,21 @@
 package edu.miu.cs489.cs489iotdevicemgmt.dto;
 
+import jdk.jfr.Name;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Builder
+//@Builder
 @Data
-public record AddressDto (
-    Long id,
-    String firstLine,
-    String secondLine,
-    String city,
-    String state,
-    String zip,
-    String country) {
-
+@NoArgsConstructor
+@AllArgsConstructor
+public class AddressDto {
+    private Long id;
+    private String firstLine;
+    private String secondLine;
+    private String city;
+    private String state;
+    private String zip;
+    private String country;
 }

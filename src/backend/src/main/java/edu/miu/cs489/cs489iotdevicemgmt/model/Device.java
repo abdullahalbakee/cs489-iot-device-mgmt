@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@Builder
+//@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Device {

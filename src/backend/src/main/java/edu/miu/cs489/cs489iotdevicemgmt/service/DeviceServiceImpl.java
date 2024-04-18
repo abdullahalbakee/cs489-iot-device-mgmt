@@ -28,8 +28,8 @@ public class DeviceServiceImpl implements DeviceService {
     public Device update(Long deviceId, Device device) {
         var existingDevice = getById(deviceId);
         if(existingDevice == null) return null;
-        existingDevice.setName(device.getName());
-        existingDevice.setSerialNumber(device.getSerialNumber());
+        //existingDevice.setName(device.getName());
+        //existingDevice.setSerialNumber(device.getSerialNumber());
         return deviceRepository.save(existingDevice);
     }
 

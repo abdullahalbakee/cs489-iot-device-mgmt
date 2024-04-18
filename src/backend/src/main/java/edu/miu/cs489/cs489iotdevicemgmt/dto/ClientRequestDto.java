@@ -1,9 +1,14 @@
 package edu.miu.cs489.cs489iotdevicemgmt.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Builder
+//@Builder
 @Data
-public record ClientRequestDto() {
+@AllArgsConstructor
+//@NoArgsConstructor
+public class ClientRequestDto {
+    private String firstName;
 }
