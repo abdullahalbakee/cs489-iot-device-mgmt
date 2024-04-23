@@ -6,16 +6,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-//@Builder
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class AddressRequestDto {
+@Builder
+public record AddressRequestDto (
     @NotEmpty(message = "Address must have first line")
-    private String firstLine;
-    private String secondLine;
-    private String city;
-    private String state;
-    private String zip;
-    private String country;
+    String firstLine,
+    String secondLine,
+    String city,
+    String state,
+    String zip,
+    String country){
 }

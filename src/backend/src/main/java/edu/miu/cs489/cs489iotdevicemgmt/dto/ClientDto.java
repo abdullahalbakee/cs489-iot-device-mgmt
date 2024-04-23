@@ -5,10 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-//@Builder
-@Data
-@AllArgsConstructor
-//@NoArgsConstructor
-public class ClientDto {
-    private String firstName;
+@Builder
+public record ClientDto (
+    String firstName) {
 }

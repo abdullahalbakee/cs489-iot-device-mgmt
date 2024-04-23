@@ -6,16 +6,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-//@Builder
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class AddressDto {
-    private Long id;
-    private String firstLine;
-    private String secondLine;
-    private String city;
-    private String state;
-    private String zip;
-    private String country;
+@Builder
+public record AddressDto (
+    Long id,
+    String firstLine,
+    String secondLine,
+    String city,
+    String state,
+    String zip,
+    String country) {
 }
