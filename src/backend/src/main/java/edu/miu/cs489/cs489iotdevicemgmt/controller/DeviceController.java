@@ -1,11 +1,10 @@
 package edu.miu.cs489.cs489iotdevicemgmt.controller;
 
+import edu.miu.cs489.cs489iotdevicemgmt.dto.DeviceDto;
 import edu.miu.cs489.cs489iotdevicemgmt.model.Device;
 import edu.miu.cs489.cs489iotdevicemgmt.service.DeviceService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/devices")
@@ -17,7 +16,8 @@ public class DeviceController {
     }
 
     @PostMapping
-    public Device createDevice(@RequestBody DeviceDto device) {
-
+    public ResponseEntity<DeviceDto> createDevice(@RequestBody DeviceDto device) {
+        var createdDevice = deviceService.create(device);
+        return ResponseEntity.ok(createdDevice);
     }
 }

@@ -1,5 +1,8 @@
 package edu.miu.cs489.cs489iotdevicemgmt.service;
 
+import edu.miu.cs489.cs489iotdevicemgmt.dto.DeviceDto;
+import edu.miu.cs489.cs489iotdevicemgmt.exception.ResourceNotFoundException;
+import edu.miu.cs489.cs489iotdevicemgmt.mapper.DeviceMapper;
 import edu.miu.cs489.cs489iotdevicemgmt.model.Device;
 import edu.miu.cs489.cs489iotdevicemgmt.repository.DeviceRepository;
 import org.springframework.stereotype.Service;
@@ -15,30 +18,39 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public List<Device> getAll() {
-        return deviceRepository.findAll();
+    public List<DeviceDto> getAll() {
+        return deviceRepository
+                .findAll().stream()
+                .map(DeviceMapper::toDto)
+                .toList();
     }
 
     @Override
-    public Device create(Device device) {
-        return deviceRepository.save(device);
+    public DeviceDto create(DeviceDto deviceDto) {
+        var device = DeviceMapper.toEntity(deviceDto);
+         deviceRepository.save(device);
+         return DeviceMapper.toDto(device);
     }
 
     @Override
-    public Device update(Long deviceId, Device device) {
+    public DeviceDto update(Long deviceId, DeviceDto deviceDto) {
         var existingDevice = getById(deviceId);
-        if(existingDevice == null) return null;
-        //existingDevice.setName(device.getName());
-        //existingDevice.setSerialNumber(device.getSerialNumber());
-        return deviceRepository.save(existingDevice);
+        if(existingDevice == null) {
+            throw new ResourceNotFoundException("Device not found with id " + deviceId);
+        }
+        existingDevice.setName(deviceDto.name());
+        existingDevice.setSerialNumber(deviceDto.serial());
+        var updatedDevice = deviceRepository.save(existingDevice);
+        return DeviceMapper.toDto(updatedDevice);
     }
 
     @Override
-    public boolean delete(Long deviceId) {
+    public void delete(Long deviceId) {
         var existingDevice = getById(deviceId);
-        if(existingDevice == null) return false;
+        if(existingDevice == null) {
+            throw new ResourceNotFoundException("Device not found with id " + deviceId);
+        }
         deviceRepository.deleteById(deviceId);
-        return true;
     }
 
     private Device getById(Long deviceId) {
