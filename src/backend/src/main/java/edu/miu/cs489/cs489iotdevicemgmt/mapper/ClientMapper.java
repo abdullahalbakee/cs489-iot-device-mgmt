@@ -9,6 +9,7 @@ public class ClientMapper {
                 .id(client.getId())
                 .firstName(client.getFirstName())
                 .lastName(client.getLastName())
+                .email(client.getEmail())
                 .address(AddressMapper.toDto(client.getAddress()))
                 .user(UserMapper.toDto(client.getUser()))
                 .build();
@@ -18,6 +19,7 @@ public class ClientMapper {
         return Client.builder()
                 .firstName(clientDto.firstName())
                 .lastName(clientDto.lastName())
+                .email(clientDto.email())
                 .build();
     }
 }

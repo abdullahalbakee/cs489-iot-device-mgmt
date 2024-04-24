@@ -26,6 +26,10 @@ public class Client {
     @NotEmpty
     private String lastName;
 
+    @Column(nullable = false, unique = true)
+    @NotEmpty
+    private String email;
+
     @OneToOne
     @JoinColumn(name = "address_id")
     @NotNull

@@ -7,6 +7,7 @@ public record ClientDto (
         Long id,
         String firstName,
         String lastName,
+        String email,
         AddressDto address,
         UserDto user
 ) {

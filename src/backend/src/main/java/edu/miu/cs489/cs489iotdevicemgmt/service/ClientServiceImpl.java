@@ -9,6 +9,7 @@ import edu.miu.cs489.cs489iotdevicemgmt.model.Client;
 import edu.miu.cs489.cs489iotdevicemgmt.repository.AddressRepository;
 import edu.miu.cs489.cs489iotdevicemgmt.repository.ClientRepository;
 import edu.miu.cs489.cs489iotdevicemgmt.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,6 +32,7 @@ public class ClientServiceImpl implements ClientService {
         return convertToDto(clients);
     }
 
+    @Transactional
     @Override
     public ClientDto create(ClientDto clientDto) {
         var addressModel = AddressMapper.toEntity(clientDto.address());
