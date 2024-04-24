@@ -22,5 +22,9 @@ public class User {
 
     @NotEmpty
     @Column(nullable = false)
+    public String role;
+
+    @NotEmpty
+    @Column(nullable = false)
     public String password;
 }

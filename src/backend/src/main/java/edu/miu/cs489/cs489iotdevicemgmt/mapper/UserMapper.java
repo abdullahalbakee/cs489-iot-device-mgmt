@@ -8,6 +8,7 @@ public class UserMapper {
         return UserDto.builder()
                 .id(user.id)
                 .username(user.username)
+                .role(user.role)
                 .build();
     }
 
@@ -15,6 +16,7 @@ public class UserMapper {
         return User.builder()
                 .username(dto.username())
                 .password(dto.password())
+                .role(dto.role())
                 .build();
     }
 }
