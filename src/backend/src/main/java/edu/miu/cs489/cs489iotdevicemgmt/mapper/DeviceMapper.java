@@ -6,6 +6,7 @@ import edu.miu.cs489.cs489iotdevicemgmt.model.Device;
 public class DeviceMapper {
     public static DeviceDto toDto(Device device) {
         return DeviceDto.builder()
+                .id(device.getId())
                 .name(device.getName())
                 .serial(device.getSerialNumber())
                 .build();

@@ -1,7 +1,6 @@
 package edu.miu.cs489.cs489iotdevicemgmt.service;
 
 import edu.miu.cs489.cs489iotdevicemgmt.dto.ClientDto;
-import edu.miu.cs489.cs489iotdevicemgmt.dto.ClientRequestDto;
 import edu.miu.cs489.cs489iotdevicemgmt.exception.ResourceNotFoundException;
 import edu.miu.cs489.cs489iotdevicemgmt.model.Client;
 import edu.miu.cs489.cs489iotdevicemgmt.repository.ClientRepository;
@@ -25,7 +24,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public ClientDto create(ClientRequestDto clientRequestDto) {
+    public ClientDto create(ClientDto clientDto) {
         //var clientModel = mapper.clientRequestDtoToClient(clientRequestDto);
         //var savedClient = clientRepository.save(clientModel);
         //return mapper.clientToClientDto(savedClient);
@@ -33,7 +32,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public ClientDto update(Long clientId, ClientRequestDto clientRequestDto) {
+    public ClientDto update(Long clientId, ClientDto clientDto) {
         var existingClient = getById(clientId);
         if (existingClient == null) {
             throw new ResourceNotFoundException("Client not found with client id: " + clientId);

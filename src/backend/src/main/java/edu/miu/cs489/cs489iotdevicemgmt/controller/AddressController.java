@@ -1,7 +1,6 @@
 package edu.miu.cs489.cs489iotdevicemgmt.controller;
 
 import edu.miu.cs489.cs489iotdevicemgmt.dto.AddressDto;
-import edu.miu.cs489.cs489iotdevicemgmt.dto.AddressRequestDto;
 import edu.miu.cs489.cs489iotdevicemgmt.service.AddressService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -25,14 +24,14 @@ public class AddressController {
     }
 
     @PostMapping
-    public ResponseEntity<AddressDto> create(@RequestBody @Valid AddressRequestDto addressRequestDto) {
-        var createdAddress = addressService.create(addressRequestDto);
+    public ResponseEntity<AddressDto> create(@RequestBody @Valid AddressDto addressDto) {
+        var createdAddress = addressService.create(addressDto);
         return ResponseEntity.ok(createdAddress);
     }
 
     @PutMapping("/{addressId}")
-    public ResponseEntity<AddressDto> update(@PathVariable Long addressId, @RequestBody @Valid AddressRequestDto addressRequestDto) {
-        var updatedAddress = addressService.update(addressId, addressRequestDto);
+    public ResponseEntity<AddressDto> update(@PathVariable Long addressId, @RequestBody @Valid AddressDto addressDto) {
+        var updatedAddress = addressService.update(addressId, addressDto);
         return ResponseEntity.ok(updatedAddress);
     }
 

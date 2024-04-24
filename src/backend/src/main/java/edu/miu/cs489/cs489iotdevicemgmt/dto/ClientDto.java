@@ -4,5 +4,10 @@ import lombok.Builder;
 
 @Builder
 public record ClientDto (
-    String firstName) {
+        Long id,
+        String firstName,
+        String lastName,
+        AddressDto address,
+        UserDto user
+) {
 }

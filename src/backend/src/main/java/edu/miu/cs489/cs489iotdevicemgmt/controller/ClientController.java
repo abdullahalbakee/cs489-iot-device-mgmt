@@ -1,7 +1,6 @@
 package edu.miu.cs489.cs489iotdevicemgmt.controller;
 
 import edu.miu.cs489.cs489iotdevicemgmt.dto.ClientDto;
-import edu.miu.cs489.cs489iotdevicemgmt.dto.ClientRequestDto;
 import edu.miu.cs489.cs489iotdevicemgmt.service.ClientService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -26,14 +25,14 @@ public class ClientController {
     }
 
     @PostMapping
-    public ResponseEntity<ClientDto> create(@RequestBody @Valid ClientRequestDto clientRequestDto) {
-        var createdClient = clientService.create(clientRequestDto);
+    public ResponseEntity<ClientDto> create(@RequestBody @Valid ClientDto clientDto) {
+        var createdClient = clientService.create(clientDto);
         return ResponseEntity.ok(createdClient);
     }
 
     @PutMapping("/{clientId}")
-    public ResponseEntity<ClientDto> update(@PathVariable Long clientId, @RequestBody @Valid ClientRequestDto clientRequestDto) {
-        var updatedClient = clientService.update(clientId, clientRequestDto);
+    public ResponseEntity<ClientDto> update(@PathVariable Long clientId, @RequestBody @Valid ClientDto clientDto) {
+        var updatedClient = clientService.update(clientId, clientDto);
         return ResponseEntity.ok(updatedClient);
     }
 
