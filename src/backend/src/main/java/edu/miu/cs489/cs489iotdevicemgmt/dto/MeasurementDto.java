@@ -5,9 +5,8 @@ import lombok.Builder;
 import java.time.LocalDateTime;
 
 @Builder
-public record DeviceDto(
-        String name,
-        String serial
+public record MeasurementDto(
+        LocalDateTime dateTime,
+        Double value
 ) {
 }
-

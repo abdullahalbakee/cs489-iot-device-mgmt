@@ -26,52 +26,10 @@ public class Cs489IotDeviceMgmtApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-//		var address1 = AddressRequest.builder()
-//				.firstLine("1000 N 4th St")
-//				.secondLine("")
-//				.city("Fairfield")
-//				.state("IA")
-//				.zip("52557")
-//				.country("USA")
-//				.build();
-//		var createdAddress = addressService.create(address1);
-//		var user1 = User.builder()
-//				.firstName("John")
-//				.lastName("Doe")
-//				.address(createdAddress)
-//				.build();
-//		var createdUser = userService.create(user1);
-//
-//		var device1 = Device.builder()
-//				.name("Device 1")
-//				.serialNumber("1234567890")
-//				.user(createdUser)
-//				.address(createdAddress)
-//				.build();
-//		var createdDevice = deviceService.create(device1);
-//		System.out.println(createdDevice);
-//
-//		var updatedDevice = device1;
-//		updatedDevice.setSerialNumber("1122334455667788");
-//		deviceService.update(updatedDevice.getId(), updatedDevice);
-
-//		printAllDevices();
-//		testAddressQueries();
+		seedData();
 	}
 
-//	private void printAllDevices() {
-//		System.out.println("List of all devices");
-//		System.out.println(deviceService.getAll());
-//	}
-
-//	private void testAddressQueries() {
-//		System.out.println("Test JPQL");
-//		System.out.println(addressService.getAllByCity("Fairfield"));
-//
-//		System.out.println("Test Native Query");
-//		System.out.println(addressService.getAllByCityAndState("Fairfield", "IA"));
-//
-//		System.out.println("Test Method Query");
-//		System.out.println(addressService.findByCountry("USA"));
-//	}
+	private void seedData() {
+		System.out.println("Seeding initial data into the db...");
+	}
 }

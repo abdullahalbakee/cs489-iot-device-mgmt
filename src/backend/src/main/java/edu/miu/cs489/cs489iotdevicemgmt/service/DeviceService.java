@@ -1,7 +1,6 @@
 package edu.miu.cs489.cs489iotdevicemgmt.service;
 
 import edu.miu.cs489.cs489iotdevicemgmt.dto.DeviceDto;
-import edu.miu.cs489.cs489iotdevicemgmt.model.Device;
 
 import java.util.List;
 

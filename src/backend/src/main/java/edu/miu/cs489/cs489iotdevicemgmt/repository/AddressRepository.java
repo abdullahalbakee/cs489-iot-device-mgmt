@@ -1,7 +1,6 @@
 package edu.miu.cs489.cs489iotdevicemgmt.repository;
 
 import edu.miu.cs489.cs489iotdevicemgmt.model.Address;
-import org.hibernate.annotations.processing.SQL;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

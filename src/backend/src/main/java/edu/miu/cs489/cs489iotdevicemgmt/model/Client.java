@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-//@Builder
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Client {
@@ -30,4 +30,9 @@ public class Client {
     @JoinColumn(name = "address_id")
     @NotNull
     private Address address;
+
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    @NotNull
+    private User user;
 }
