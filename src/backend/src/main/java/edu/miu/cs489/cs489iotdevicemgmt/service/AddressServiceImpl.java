@@ -25,9 +25,9 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public AddressDto create(AddressDto addressDto) {
-        var address = AddressMapper.addressRequestDtoToAddress(addressDto);
+        var address = AddressMapper.toEntity(addressDto);
         var savedAddress = addressRepository.save(address);
-        return AddressMapper.addressToAddressDto(savedAddress);
+        return AddressMapper.toDto(savedAddress);
     }
 
     @Override
@@ -36,10 +36,10 @@ public class AddressServiceImpl implements AddressService {
         if(existingAddress == null) {
             throw new ResourceNotFoundException("Address not found with addressDto id: " + addressId);
         }
-        var addressModel = AddressMapper.addressRequestDtoToAddress(addressDto);
+        var addressModel = AddressMapper.toEntity(addressDto);
         addressModel.setId(addressId);
         var updatedAddress = addressRepository.save(addressModel);
-        return AddressMapper.addressToAddressDto(updatedAddress);
+        return AddressMapper.toDto(updatedAddress);
     }
 
     @Override
@@ -71,6 +71,6 @@ public class AddressServiceImpl implements AddressService {
     }
 
     private static List<AddressDto> convertToDto(List<Address> addresses) {
-        return addresses.stream().map(AddressMapper::addressToAddressDto).toList();
+        return addresses.stream().map(AddressMapper::toDto).toList();
     }
 }

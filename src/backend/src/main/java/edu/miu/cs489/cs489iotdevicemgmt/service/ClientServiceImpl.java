@@ -2,8 +2,13 @@ package edu.miu.cs489.cs489iotdevicemgmt.service;
 
 import edu.miu.cs489.cs489iotdevicemgmt.dto.ClientDto;
 import edu.miu.cs489.cs489iotdevicemgmt.exception.ResourceNotFoundException;
+import edu.miu.cs489.cs489iotdevicemgmt.mapper.AddressMapper;
+import edu.miu.cs489.cs489iotdevicemgmt.mapper.ClientMapper;
+import edu.miu.cs489.cs489iotdevicemgmt.mapper.UserMapper;
 import edu.miu.cs489.cs489iotdevicemgmt.model.Client;
+import edu.miu.cs489.cs489iotdevicemgmt.repository.AddressRepository;
 import edu.miu.cs489.cs489iotdevicemgmt.repository.ClientRepository;
+import edu.miu.cs489.cs489iotdevicemgmt.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,10 +16,13 @@ import java.util.List;
 @Service
 public class ClientServiceImpl implements ClientService {
     private final ClientRepository clientRepository;
-    //private final ClientMapper mapper = ClientMapper.INSTANCE;
+    private final AddressRepository addressRepository;
+    private final UserRepository userRepository;
 
-    public ClientServiceImpl(ClientRepository clientRepository) {
+    public ClientServiceImpl(ClientRepository clientRepository, AddressRepository addressRepository, UserRepository userRepository) {
         this.clientRepository = clientRepository;
+        this.addressRepository = addressRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -25,10 +33,17 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public ClientDto create(ClientDto clientDto) {
-        //var clientModel = mapper.clientRequestDtoToClient(clientRequestDto);
-        //var savedClient = clientRepository.save(clientModel);
-        //return mapper.clientToClientDto(savedClient);
-        return null;
+        var addressModel = AddressMapper.toEntity(clientDto.address());
+        var savedAddress = addressRepository.save(addressModel);
+
+        var userModel = UserMapper.toEntity(clientDto.user());
+        var savedUser = userRepository.save(userModel);
+
+        var clientModel = ClientMapper.toEntity(clientDto);
+        clientModel.setAddress(savedAddress);
+        clientModel.setUser(savedUser);
+        var savedClient = clientRepository.save(clientModel);
+        return ClientMapper.toDto(savedClient);
     }
 
     @Override
@@ -58,7 +73,6 @@ public class ClientServiceImpl implements ClientService {
     }
 
     private List<ClientDto> convertToDto(List<Client> clients) {
-//        return clients.stream().map(c-> mapper.clientToClientDto(c)).toList();
-        return null;
+        return clients.stream().map(ClientMapper::toDto).toList();
     }
 }
