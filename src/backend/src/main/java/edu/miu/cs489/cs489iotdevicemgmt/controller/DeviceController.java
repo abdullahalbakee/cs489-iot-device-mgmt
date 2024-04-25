@@ -19,15 +19,15 @@ public class DeviceController {
 
     @GetMapping
     public ResponseEntity<List<DeviceDto>> getAllDevices() {
-        var user = JwtService.getLoggedInUser();
-        var devices = deviceService.getAll(user);
+        var client = JwtService.getLoggedInUser();
+        var devices = deviceService.getAll(client);
         return ResponseEntity.ok(devices);
     }
 
     @PostMapping
     public ResponseEntity<DeviceDto> createDevice(@RequestBody DeviceDto device) {
-        var user = JwtService.getLoggedInUser();
-        var createdDevice = deviceService.create(device, user);
+        var client = JwtService.getLoggedInUser();
+        var createdDevice = deviceService.create(device, client);
         return ResponseEntity.ok(createdDevice);
     }
 }

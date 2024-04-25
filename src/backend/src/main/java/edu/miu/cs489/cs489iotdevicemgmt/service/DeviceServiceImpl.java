@@ -36,9 +36,9 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public List<DeviceDto> getAll(User user) {
+    public List<DeviceDto> getAll(User client) {
         return deviceRepository
-                .findAllByUserId(user.id)
+                .findAllByClientId(client.id)
                 .stream()
                 .map(DeviceMapper::toDto)
                 .toList();
@@ -46,14 +46,14 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     @Transactional
-    public DeviceDto create(DeviceDto deviceDto, User loggedInUser) {
+    public DeviceDto create(DeviceDto deviceDto, User loggedInClient) {
         var device = DeviceMapper.toEntity(deviceDto);
 
         var address = AddressMapper.toEntity(deviceDto.address());
         var savedAddress = addressRepository.save(address);
         device.setAddress(savedAddress);
 
-        var client = clientRepository.findByUserId(loggedInUser.id).orElse(null);
+        var client = clientRepository.findByUserId(loggedInClient.id).orElse(null);
         device.setClient(client);
 
         var user = formatDeviceAsUser(deviceDto);

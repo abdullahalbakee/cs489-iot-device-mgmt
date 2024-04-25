@@ -6,8 +6,8 @@ import edu.miu.cs489.cs489iotdevicemgmt.model.User;
 import java.util.List;
 
 public interface DeviceService {
-    List<DeviceDto> getAll(User user);
-    DeviceDto create(DeviceDto device, User loggedInUser);
+    List<DeviceDto> getAll(User client);
+    DeviceDto create(DeviceDto device, User client);
     DeviceDto update(Long deviceId, DeviceDto device);
     void delete(Long deviceId);
 }
