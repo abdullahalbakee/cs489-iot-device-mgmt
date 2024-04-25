@@ -1,8 +1,10 @@
 package edu.miu.cs489.cs489iotdevicemgmt.config;
 
+import edu.miu.cs489.cs489iotdevicemgmt.filter.JwtAuthFilter;
 import edu.miu.cs489.cs489iotdevicemgmt.service.security.AppUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -10,15 +12,27 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class AppSecurityConfig {
 
-    private AppUserDetailsService appUserDetailsService;
+    private final String ROLE_ADMIN = "admin";
+    private final String ROLE_CLIENT = "client";
+    private final String ROLE_DEVICE = "device";
+
+    private final AppUserDetailsService appUserDetailsService;
+    private final JwtAuthFilter jwtAuthFilter;
+
+    public AppSecurityConfig(AppUserDetailsService appUserDetailsService, JwtAuthFilter jwtAuthFilter) {
+        this.appUserDetailsService = appUserDetailsService;
+        this.jwtAuthFilter = jwtAuthFilter;
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -26,15 +40,31 @@ public class AppSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         auth -> {
-                            auth.requestMatchers("/hello").permitAll()
-                                    .requestMatchers("/auth/**").permitAll()
-                                    //.requestMatchers(HttpMethod.DELETE,"/users").hasRole("ROLE_ADMIN")
-                                    //.requestMatchers("/**").authenticated()
+                            auth.requestMatchers("/auth/**").permitAll()
+                                    // /clients
+                                    .requestMatchers(HttpMethod.GET,"/clients").hasRole(ROLE_ADMIN)
+                                    .requestMatchers(HttpMethod.POST, "/clients").hasRole(ROLE_CLIENT)
+                                    .requestMatchers(HttpMethod.PUT, "/clients").hasRole(ROLE_CLIENT)
+                                    .requestMatchers(HttpMethod.DELETE,"/clients").hasRole(ROLE_ADMIN)
+
+                                    // /devices
+                                    .requestMatchers("/devices").hasRole(ROLE_CLIENT)
+
+                                    // /measurements
+                                    .requestMatchers(HttpMethod.GET, "/measurements").hasRole(ROLE_CLIENT)
+                                    .requestMatchers(HttpMethod.POST, "/measurements").hasRole(ROLE_DEVICE)
+                                    .requestMatchers(HttpMethod.PUT, "/measurements").hasRole(ROLE_CLIENT)
+                                    .requestMatchers(HttpMethod.DELETE, "/measurements").hasRole(ROLE_CLIENT)
+
+                                    // default
+                                    .requestMatchers("/**").authenticated()
                             ;
 
                         }
                 )
-                //.sessionManagement()
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authenticationProvider(authenticationProvider())
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
