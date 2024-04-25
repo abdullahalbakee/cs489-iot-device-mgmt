@@ -10,6 +10,7 @@ import edu.miu.cs489.cs489iotdevicemgmt.repository.AddressRepository;
 import edu.miu.cs489.cs489iotdevicemgmt.repository.ClientRepository;
 import edu.miu.cs489.cs489iotdevicemgmt.repository.UserRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,11 +20,13 @@ public class ClientServiceImpl implements ClientService {
     private final ClientRepository clientRepository;
     private final AddressRepository addressRepository;
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public ClientServiceImpl(ClientRepository clientRepository, AddressRepository addressRepository, UserRepository userRepository) {
+    public ClientServiceImpl(ClientRepository clientRepository, AddressRepository addressRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.clientRepository = clientRepository;
         this.addressRepository = addressRepository;
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -39,6 +42,7 @@ public class ClientServiceImpl implements ClientService {
         var savedAddress = addressRepository.save(addressModel);
 
         var userModel = UserMapper.toEntity(clientDto.user());
+        userModel.password = passwordEncoder.encode(userModel.password);
         var savedUser = userRepository.save(userModel);
 
         var clientModel = ClientMapper.toEntity(clientDto);

@@ -29,10 +29,12 @@ public class Device {
 
     @ManyToOne
     @JoinColumn(name = "client_id")
+    @NotNull
     private Client client;
 
     @OneToOne
     @JoinColumn(name = "address_id")
+    @NotNull
     private Address address;
 
     @OneToOne

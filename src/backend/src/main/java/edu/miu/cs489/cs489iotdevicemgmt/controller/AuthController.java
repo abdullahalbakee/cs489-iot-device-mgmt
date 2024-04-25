@@ -6,7 +6,9 @@ import edu.miu.cs489.cs489iotdevicemgmt.service.UserService;
 import edu.miu.cs489.cs489iotdevicemgmt.service.security.JwtService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping(value = {"/auth"})
 public class AuthController {
 
     private JwtService jwtService;
@@ -32,27 +33,22 @@ public class AuthController {
 
     @PostMapping(value = {"/login"})
     public ResponseEntity<LoginDto> authenticateUser(@Valid @RequestBody LoginDto loginDto) throws Exception {
-        LoginDto userAuthResponse = null;
-        try {
-            var username = loginDto.username();
-            var password = loginDto.password();
-            var authentication = new UsernamePasswordAuthenticationToken(username, password);
-            authenticationManager.authenticate(authentication);
-            var user = userService.getUser(username);
-            var jwtToken = jwtService.generateToken(user);
-            if(user != null) {
-                userAuthResponse =
-                        LoginDto.builder()
-                                .username(user.username())
-                                .token(jwtToken)
-                                .role(user.role())
-                                .build();
-            }
-        } catch (Exception ex) {
-            System.out.println("UserAuthException is: " + ex);
-            throw ex;
+        var username = loginDto.username();
+        var password = loginDto.password();
+        var authentication = new UsernamePasswordAuthenticationToken(username, password);
+        authenticationManager.authenticate(authentication);
+        var user = userService.getUser(username);
+        var jwtToken = jwtService.generateToken(user);
+        if (user == null) {
+            throw new BadCredentialsException("Invalid username or password");
         }
+        var userAuthResponse =
+                LoginDto.builder()
+                        .username(user.username())
+                        .token(jwtToken)
+                        .role(user.role())
+                        .build();
+
         return ResponseEntity.ok(userAuthResponse);
     }
-
 }

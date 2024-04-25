@@ -22,10 +22,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class AppSecurityConfig {
 
-    private final String ROLE_ADMIN = "admin";
-    private final String ROLE_CLIENT = "client";
-    private final String ROLE_DEVICE = "device";
-
     private final AppUserDetailsService appUserDetailsService;
     private final JwtAuthFilter jwtAuthFilter;
 
@@ -40,24 +36,28 @@ public class AppSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         auth -> {
-                            auth.requestMatchers("/auth/**").permitAll()
+                            auth
+                                    .requestMatchers("/swagger-ui/**").permitAll()
+                                    .requestMatchers("/v3/**").permitAll()
+
+                                    .requestMatchers("/login").permitAll()
                                     // /clients
-                                    .requestMatchers(HttpMethod.GET,"/clients").hasRole(ROLE_ADMIN)
-                                    .requestMatchers(HttpMethod.POST, "/clients").hasRole(ROLE_CLIENT)
-                                    .requestMatchers(HttpMethod.PUT, "/clients").hasRole(ROLE_CLIENT)
-                                    .requestMatchers(HttpMethod.DELETE,"/clients").hasRole(ROLE_ADMIN)
+//                                    .requestMatchers(HttpMethod.GET,"/clients").hasRole(ROLE_ADMIN)
+//                                    .requestMatchers(HttpMethod.POST, "/clients").permitAll()//.hasRole(ROLE_CLIENT)
+//                                    .requestMatchers(HttpMethod.PUT, "/clients").hasRole(ROLE_CLIENT)
+//                                    .requestMatchers(HttpMethod.DELETE,"/clients").hasRole(ROLE_ADMIN)
 
                                     // /devices
-                                    .requestMatchers("/devices").hasRole(ROLE_CLIENT)
+//                                    .requestMatchers("/devices").hasRole(ROLE_CLIENT)
 
                                     // /measurements
-                                    .requestMatchers(HttpMethod.GET, "/measurements").hasRole(ROLE_CLIENT)
-                                    .requestMatchers(HttpMethod.POST, "/measurements").hasRole(ROLE_DEVICE)
-                                    .requestMatchers(HttpMethod.PUT, "/measurements").hasRole(ROLE_CLIENT)
-                                    .requestMatchers(HttpMethod.DELETE, "/measurements").hasRole(ROLE_CLIENT)
+//                                    .requestMatchers(HttpMethod.GET, "/measurements").hasRole(ROLE_CLIENT)
+//                                    .requestMatchers(HttpMethod.POST, "/measurements").hasRole(ROLE_DEVICE)
+//                                    .requestMatchers(HttpMethod.PUT, "/measurements").hasRole(ROLE_CLIENT)
+//                                    .requestMatchers(HttpMethod.DELETE, "/measurements").hasRole(ROLE_CLIENT)
 
                                     // default
-                                    .requestMatchers("/**").authenticated()
+                                    .requestMatchers("/**").permitAll()
                             ;
 
                         }

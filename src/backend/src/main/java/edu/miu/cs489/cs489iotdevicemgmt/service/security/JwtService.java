@@ -1,10 +1,13 @@
 package edu.miu.cs489.cs489iotdevicemgmt.service.security;
 
 import edu.miu.cs489.cs489iotdevicemgmt.dto.UserDto;
+import edu.miu.cs489.cs489iotdevicemgmt.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -60,7 +63,18 @@ public class JwtService {
     public String generateToken(UserDto userDto) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("role", userDto.role());
+        claims.put("userId", userDto.id());
         return createToken(claims, userDto.username());
+    }
+
+    public static User getLoggedInUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        var principal = authentication.getPrincipal();
+        if (authentication != null && authentication.getPrincipal() instanceof AppUserDetails) {
+            var userDetails = (AppUserDetails) authentication.getPrincipal();
+            return userDetails.getUser();
+        }
+        return null;
     }
 
     private Boolean isTokenExpired(String token) {

@@ -9,6 +9,8 @@ public class DeviceMapper {
                 .id(device.getId())
                 .name(device.getName())
                 .serial(device.getSerialNumber())
+                .user(UserMapper.toDto(device.getUser()))
+                .address(AddressMapper.toDto(device.getAddress()))
                 .build();
     }
 

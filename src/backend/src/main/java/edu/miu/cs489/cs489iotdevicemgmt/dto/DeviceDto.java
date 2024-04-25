@@ -8,7 +8,9 @@ import java.time.LocalDateTime;
 public record DeviceDto(
         Long id,
         String name,
-        String serial
+        String serial,
+        AddressDto address,
+        UserDto user
 ) {
 }
 
