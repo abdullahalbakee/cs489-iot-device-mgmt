@@ -2,6 +2,7 @@ import axios from "./common";
 
 export async function register(user) {
   try {
+    return [];
     const response = await axios.post("/auth/register", user);
     return response.data;
   } catch (error) {
@@ -11,11 +12,6 @@ export async function register(user) {
 }
 
 export async function login(user) {
-  try {
-    const response = await axios.post("/auth/login", user);
+    const response = await axios.post("/login", user);
     return response.data;
-  } catch (error) {
-    console.log("login", error);
-    return null;
-  }
 }

@@ -4,10 +4,9 @@ import Form from "react-bootstrap/Form";
 import User from "../../models/user";
 import { register } from "../../service/auth";
 import { Link, useNavigate } from "react-router-dom";
-import { useToast } from "react-toastify";
+import { toast } from "react-toastify";
 
 export default function RegistrationForm() {
-  const alert = useToast();
   console.log(alert);
   const [user, setUser] = useState(new User());
   const navigate = useNavigate();
@@ -26,7 +25,7 @@ export default function RegistrationForm() {
       navigate("/");
     } else {
       console.log(res);
-      alert.error(res.error);
+      toast(res.error);
     }
   };
 
@@ -41,22 +40,11 @@ export default function RegistrationForm() {
         onSubmit={handleSubmit}
       >
         <Form.Group className="mb-3" controlId="registrationEmail">
-          <Form.Label>Email address</Form.Label>
-          <Form.Control
-            type="email"
-            placeholder="Enter email"
-            name="email"
-            onChange={handleTextChange}
-            required
-          />
-        </Form.Group>
-
-        <Form.Group className="mb-3" controlId="registrationLicense">
-          <Form.Label>License number</Form.Label>
+          <Form.Label>Username</Form.Label>
           <Form.Control
             type="text"
-            placeholder="License number"
-            name="license"
+            placeholder="Username"
+            name="username"
             onChange={handleTextChange}
             required
           />
@@ -88,7 +76,7 @@ export default function RegistrationForm() {
           Register
         </Button>
         <p>
-          Already have an account <Link to="/login">login here</Link>
+          Already have an account? Login <Link to="/login">here</Link>
         </p>
       </Form>
     </>

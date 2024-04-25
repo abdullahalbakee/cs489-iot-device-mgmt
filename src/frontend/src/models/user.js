@@ -1,8 +1,9 @@
 export default class User {
   constructor() {
-    this.email = "";
-    this.license = "";
+    this.username = "";
     this.password = "";
     this.retypePassword = "";
+    this.role = "";
+    this.token = "";
   }
 }

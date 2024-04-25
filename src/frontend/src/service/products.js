@@ -3,6 +3,7 @@ import { getToken } from "./token";
 
 export async function addProduct(product) {
   try {
+    return [];
     const response = await axios.post("/products", product, {
       headers: { Authorization: `Bearer ${getToken()}` },
     });
@@ -19,6 +20,7 @@ export async function getProducts(query) {
     params = { title: query };
   }
   try {
+    return [];
     const response = await axios.get("/products", {
       headers: { Authorization: `Bearer ${getToken()}` },
       params: params,
@@ -32,6 +34,7 @@ export async function getProducts(query) {
 
 export async function getProduct(productId) {
   try {
+    return [];
     const response = await axios.get("/products/" + productId, {
       headers: { Authorization: `Bearer ${getToken()}` },
     });
@@ -44,6 +47,7 @@ export async function getProduct(productId) {
 
 export async function getBids(productId) {
   try {
+    return [];
     const response = await axios.get("products/" + productId + "/bids", {
       headers: { Authorization: `Bearer ${getToken()}` },
     });
@@ -56,6 +60,7 @@ export async function getBids(productId) {
 
 export async function bidForProduct(productId, amount) {
   try {
+    return [];
     const response = await axios.post(
       "products/" + productId + "/bids",
       { amount },

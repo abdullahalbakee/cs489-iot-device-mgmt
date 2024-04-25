@@ -1,20 +1,25 @@
 import React from "react";
 import { createBrowserRouter } from "react-router-dom";
-import Product from "../components/products";
+
+import Home from "../components/home";
 import Registration from "../components/registration";
 import Login from "../components/login";
-import History from "../components/history";
-import AddProduct from "../components/my-products/add-product";
-import ProductDetail from "../components/products/product-detail";
 import Error from "../components/common/error";
 import Logout from "../components/logout";
-import MyProducts from "../components/my-products";
-import EditProduct from "../components/my-products/edit-product";
+
+import Clients from "../components/home";
+import AddCient from "../components/home";
+import EditClient from "../components/home";
+import Devices from "../components/home";
+import AddDevice from "../components/home";
+import EditDevice from "../components/home";
+import Measurements from "../components/measurements";
+import AddMeasurement from "../components/home";
 
 export default createBrowserRouter([
   {
     path: "/",
-    element: <Product />,
+    element: <Home />,
     errorElement: <Error />,
   },
   {
@@ -30,23 +35,35 @@ export default createBrowserRouter([
     element: <Logout />,
   },
   {
-    path: "/history",
-    element: <History />,
+    path: "/clients",
+    element: <Clients />,
   },
   {
-    path: "/my-products",
-    element: <MyProducts />,
+    path: "/clients/add",
+    element: <AddCient />,
   },
   {
-    path: "/my-products/add",
-    element: <AddProduct />,
+    path: "/clients/edit/:clientId",
+    element: <EditClient />,
   },
   {
-    path: "/my-products/edit/:productId",
-    element: <EditProduct />,
+    path: "/devices",
+    element: <Devices />,
   },
   {
-    path: "/products/:productId",
-    element: <ProductDetail />,
+    path: "/devices/add",
+    element: <AddDevice />,
+  },
+  {
+    path: "/devices/edit/:deviceId",
+    element: <EditDevice />,
+  },
+  {
+    path: "/measurements/:deviceId",
+    element: <Measurements />,
+  },
+  {
+    path: "/measurements/add/:deviceId",
+    element: <AddMeasurement />,
   },
 ]);

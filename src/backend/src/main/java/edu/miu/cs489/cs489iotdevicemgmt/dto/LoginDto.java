@@ -7,7 +7,6 @@ import lombok.Builder;
 public record LoginDto(
         String username,
         String password,
-        @Null
         String token,
         String role
 ) {

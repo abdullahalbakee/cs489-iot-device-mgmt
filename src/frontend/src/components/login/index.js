@@ -7,27 +7,25 @@ import { saveToken } from "../../service/token";
 import { login } from "../../service/auth";
 import UserContext from "../../context/user-context";
 import { setBearerToken } from "../../service/common";
-import { useToast } from "react-toastify";
+import { toast, Zoom } from "react-toastify";
 
-export default function RegistrationForm() {
-  const alert = useToast();
+export default function LoginForm() {
   const [user, setUser] = useState(new User());
   const navigate = useNavigate();
   const { setAccessToken } = useContext(UserContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const res = await login(user);
-    if (res.success) {
-      const token = res.data.accessToken;
+    try {
+      const res = await login(user);
+      const token = res.token;
       saveToken(token);
       setAccessToken(token);
       setBearerToken(token);
       navigate("/");
-    } else {
-      console.log(res);
-      alert.error(res.error);
+    } catch(e) {
+      console.log("Login error", e);
+      toast.error(e.response.data, {position: "top-center", transition:Zoom});
     }
   };
 
@@ -42,11 +40,11 @@ export default function RegistrationForm() {
         onSubmit={handleSubmit}
       >
         <Form.Group className="mb-3" controlId="registrationEmail">
-          <Form.Label>Email address</Form.Label>
+          <Form.Label>User name</Form.Label>
           <Form.Control
-            type="email"
-            placeholder="Enter email"
-            name="email"
+            type="text"
+            placeholder="Username"
+            name="username"
             onChange={handleTextChange}
             required
           />
