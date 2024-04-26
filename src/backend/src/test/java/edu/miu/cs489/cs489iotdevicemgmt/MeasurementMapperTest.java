@@ -1,6 +1,5 @@
-package edu.miu.cs489.cs489iotdevicemgmt.unit;
+package edu.miu.cs489.cs489iotdevicemgmt;
 
-import edu.miu.cs489.cs489iotdevicemgmt.AbstractComponentTest;
 import edu.miu.cs489.cs489iotdevicemgmt.dto.MeasurementDto;
 import edu.miu.cs489.cs489iotdevicemgmt.mapper.MeasurementMapper;
 import edu.miu.cs489.cs489iotdevicemgmt.model.Measurement;
@@ -13,7 +12,7 @@ import static org.hamcrest.Matchers.*;
 
 public class MeasurementMapperTest extends AbstractComponentTest {
     @Test
-    public void testMeasurement() {
+    public void testToEntity() {
         var measurementDto = new MeasurementDto(null, 100.50);
         var measurement = MeasurementMapper.toEntity(measurementDto);
         assertThat(measurement.dateTime, is(nullValue()));
@@ -21,7 +20,7 @@ public class MeasurementMapperTest extends AbstractComponentTest {
     }
 
     @Test
-    public void testMeasurement2() {
+    public void testToDto() {
         var measurement = Measurement.builder()
                 .dateTime(LocalDateTime.now())
                 .value(10.0)
