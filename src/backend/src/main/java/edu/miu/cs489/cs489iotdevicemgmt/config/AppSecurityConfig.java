@@ -2,6 +2,7 @@ package edu.miu.cs489.cs489iotdevicemgmt.config;
 
 import edu.miu.cs489.cs489iotdevicemgmt.filter.JwtAuthFilter;
 import edu.miu.cs489.cs489iotdevicemgmt.service.security.AppUserDetailsService;
+import edu.miu.cs489.cs489iotdevicemgmt.service.security.Roles;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -39,27 +40,12 @@ public class AppSecurityConfig {
                             auth
                                     .requestMatchers("/swagger-ui/**").permitAll()
                                     .requestMatchers("/v3/**").permitAll()
-
                                     .requestMatchers("/login").permitAll()
-                                    // /clients
-//                                    .requestMatchers(HttpMethod.GET,"/clients").hasRole(ROLE_ADMIN)
-//                                    .requestMatchers(HttpMethod.POST, "/clients").permitAll()//.hasRole(ROLE_CLIENT)
-//                                    .requestMatchers(HttpMethod.PUT, "/clients").hasRole(ROLE_CLIENT)
-//                                    .requestMatchers(HttpMethod.DELETE,"/clients").hasRole(ROLE_ADMIN)
-
-                                    // /devices
-//                                    .requestMatchers("/devices").hasRole(ROLE_CLIENT)
-
-                                    // /measurements
-//                                    .requestMatchers(HttpMethod.GET, "/measurements").hasRole(ROLE_CLIENT)
-//                                    .requestMatchers(HttpMethod.POST, "/measurements").hasRole(ROLE_DEVICE)
-//                                    .requestMatchers(HttpMethod.PUT, "/measurements").hasRole(ROLE_CLIENT)
-//                                    .requestMatchers(HttpMethod.DELETE, "/measurements").hasRole(ROLE_CLIENT)
-
-                                    // default
-                                    .requestMatchers("/**").permitAll()
-                            ;
-
+                                    .requestMatchers(HttpMethod.POST, "/clients").permitAll()
+                                    .requestMatchers( "/clients/**").hasAuthority(Roles.ADMIN)
+                                    .requestMatchers("/devices/**").hasAuthority(Roles.CLIENT)
+                                    .requestMatchers(HttpMethod.POST, "/measurements/**").hasAuthority(Roles.DEVICE)
+                                    .requestMatchers( "/measurements/**").hasAuthority(Roles.CLIENT);
                         }
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

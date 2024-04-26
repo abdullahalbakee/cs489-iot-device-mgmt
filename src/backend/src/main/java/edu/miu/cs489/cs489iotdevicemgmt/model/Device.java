@@ -32,12 +32,12 @@ public class Device {
     @NotNull
     private Client client;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "address_id")
     @NotNull
     private Address address;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "user_id")
     @NotNull
     private User user;

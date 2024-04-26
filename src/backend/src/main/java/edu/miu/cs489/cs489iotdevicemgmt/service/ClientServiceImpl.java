@@ -7,6 +7,7 @@ import edu.miu.cs489.cs489iotdevicemgmt.mapper.ClientMapper;
 import edu.miu.cs489.cs489iotdevicemgmt.mapper.UserMapper;
 import edu.miu.cs489.cs489iotdevicemgmt.model.Client;
 import edu.miu.cs489.cs489iotdevicemgmt.repository.*;
+import edu.miu.cs489.cs489iotdevicemgmt.service.security.Roles;
 import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -45,6 +46,7 @@ public class ClientServiceImpl implements ClientService {
 
         var userModel = UserMapper.toEntity(clientDto.user());
         userModel.password = passwordEncoder.encode(userModel.password);
+        userModel.role = Roles.CLIENT;
         var savedUser = userRepository.save(userModel);
 
         var clientModel = ClientMapper.toEntity(clientDto);
@@ -91,11 +93,6 @@ public class ClientServiceImpl implements ClientService {
         if(existingClient == null) {
             throw new ResourceNotFoundException("Client not found with client id: " + clientId);
         }
-        var existingAddress = existingClient.getAddress();
-        addressRepository.delete(existingAddress);
-
-        var existingUser = existingClient.getUser();
-        userRepository.delete(existingUser);
 
         var existingDevices = deviceRepository.findAllByClientId(existingClient.getId());
         for (var device : existingDevices) {
@@ -103,7 +100,7 @@ public class ClientServiceImpl implements ClientService {
         }
         deviceRepository.deleteByClientId(existingClient.getId());
 
-        clientRepository.delete(existingClient);
+        clientRepository.deleteById(existingClient.getId());
     }
 
     private Client getById(Long clientId) {

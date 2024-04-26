@@ -30,12 +30,12 @@ public class Client {
     @NotEmpty
     private String email;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "address_id")
     @NotNull
     private Address address;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "user_id")
     @NotNull
     private User user;
