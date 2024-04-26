@@ -8,6 +8,6 @@ import java.util.List;
 public interface DeviceService {
     List<DeviceDto> getAll(User client);
     DeviceDto create(DeviceDto device, User client);
-    DeviceDto update(Long deviceId, DeviceDto device);
-    void delete(Long deviceId);
+    DeviceDto update(Long deviceId, DeviceDto device, User client);
+    void delete(Long deviceId, User client);
 }

@@ -13,6 +13,7 @@ import edu.miu.cs489.cs489iotdevicemgmt.repository.DeviceRepository;
 import edu.miu.cs489.cs489iotdevicemgmt.repository.UserRepository;
 import edu.miu.cs489.cs489iotdevicemgmt.service.security.Roles;
 import jakarta.transaction.Transactional;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -74,10 +75,13 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public DeviceDto update(Long deviceId, DeviceDto deviceDto) {
+    public DeviceDto update(Long deviceId, DeviceDto deviceDto, User client) {
         var existingDevice = getById(deviceId);
         if(existingDevice == null) {
             throw new ResourceNotFoundException("Device not found with id " + deviceId);
+        }
+        if(existingDevice.getClient().getId() != client.id) {
+            throw new AccessDeniedException("Client does not have access for device: " + deviceId);
         }
         existingDevice.setName(deviceDto.name());
         existingDevice.setSerialNumber(deviceDto.serial());
@@ -86,11 +90,16 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public void delete(Long deviceId) {
+    public void delete(Long deviceId, User client) {
         var existingDevice = getById(deviceId);
         if(existingDevice == null) {
             throw new ResourceNotFoundException("Device not found with id " + deviceId);
         }
+
+        if(existingDevice.getClient().getId() != client.id) {
+            throw new AccessDeniedException("Client does not have access for device: " + deviceId);
+        }
+
         deviceRepository.deleteById(deviceId);
     }
 

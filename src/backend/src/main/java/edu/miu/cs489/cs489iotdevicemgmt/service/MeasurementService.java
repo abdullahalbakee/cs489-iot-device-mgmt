@@ -8,4 +8,8 @@ import java.util.List;
 public interface MeasurementService {
     List<MeasurementDto> getAll(User loggedInClient, String deviceUsername);
     MeasurementDto create(MeasurementDto device, User loggedInDevice);
+
+    MeasurementDto update(Long measurementId, MeasurementDto measurementDto, User loggedInClient);
+
+    void delete(Long measurementId, User loggedInClient);
 }

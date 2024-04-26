@@ -30,4 +30,18 @@ public class DeviceController {
         var createdDevice = deviceService.create(device, client);
         return ResponseEntity.ok(createdDevice);
     }
+
+    @PutMapping("/{deviceId}")
+    public ResponseEntity<DeviceDto> updateDevice(@PathVariable Long deviceId, @RequestBody DeviceDto device) {
+        var client = JwtService.getLoggedInUser();
+        var updatedDevice = deviceService.update(deviceId, device, client);
+        return ResponseEntity.ok(updatedDevice);
+    }
+
+    @DeleteMapping("/{deviceId}")
+    public ResponseEntity updateDevice(@PathVariable Long deviceId) {
+        var client = JwtService.getLoggedInUser();
+        deviceService.delete(deviceId, client);
+        return ResponseEntity.noContent().build();
+    }
 }

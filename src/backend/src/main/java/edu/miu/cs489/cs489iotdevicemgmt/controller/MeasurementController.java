@@ -30,4 +30,18 @@ public class MeasurementController {
         var createdDevice = measurementService.create(measurementDto, loggedInDevice);
         return ResponseEntity.ok(createdDevice);
     }
+
+    @PutMapping("/{measurementId}")
+    public ResponseEntity<MeasurementDto> updateMeasurement(@PathVariable Long measurementId, @RequestBody MeasurementDto measurementDto) {
+        var loggedInClient = JwtService.getLoggedInUser();
+        var updatedMeasurement = measurementService.update(measurementId, measurementDto, loggedInClient);
+        return ResponseEntity.ok(updatedMeasurement);
+    }
+
+    @DeleteMapping("/{measurementId}")
+    public ResponseEntity deleteMeasurement(@PathVariable Long measurementId) {
+        var loggedInClient = JwtService.getLoggedInUser();
+        measurementService.delete(measurementId, loggedInClient);
+        return ResponseEntity.notFound().build();
+    }
 }

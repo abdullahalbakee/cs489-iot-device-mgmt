@@ -58,11 +58,10 @@ public class ClientServiceImpl implements ClientService {
         if (existingClient == null) {
             throw new ResourceNotFoundException("Client not found with client id: " + clientId);
         }
-//        var clientModel = mapper.clientRequestDtoToClient(clientRequestDto);
-//        clientModel.setId(clientId);
-//        var savedClient = clientRepository.save(clientModel);
-//        return mapper.clientToClientDto(savedClient);
-        return null;
+        var clientModel = ClientMapper.toEntity(clientDto);
+        clientModel.setId(clientId);
+        var savedClient = clientRepository.save(clientModel);
+        return ClientMapper.toDto(savedClient);
     }
 
     @Override

@@ -3,7 +3,9 @@ package edu.miu.cs489.cs489iotdevicemgmt.service;
 import edu.miu.cs489.cs489iotdevicemgmt.dto.MeasurementDto;
 import edu.miu.cs489.cs489iotdevicemgmt.exception.ResourceNotFoundException;
 import edu.miu.cs489.cs489iotdevicemgmt.mapper.MeasurementMapper;
+import edu.miu.cs489.cs489iotdevicemgmt.model.Client;
 import edu.miu.cs489.cs489iotdevicemgmt.model.Device;
+import edu.miu.cs489.cs489iotdevicemgmt.model.Measurement;
 import edu.miu.cs489.cs489iotdevicemgmt.model.User;
 import edu.miu.cs489.cs489iotdevicemgmt.repository.ClientRepository;
 import edu.miu.cs489.cs489iotdevicemgmt.repository.DeviceRepository;
@@ -54,11 +56,48 @@ public class MeasurementServiceImpl implements MeasurementService {
         return MeasurementMapper.toDto(savedMeasurement);
     }
 
+    @Override
+    public MeasurementDto update(Long measurementId, MeasurementDto measurementDto, User loggedInClient) {
+        var existingMeasurement = getMeasurementIfValid(measurementId, loggedInClient);
+        var measurement = MeasurementMapper.toEntity(measurementDto);
+        if(measurement.dateTime == null) {
+            measurement.dateTime = LocalDateTime.now();
+        }
+        existingMeasurement.setDateTime(measurement.dateTime);
+        existingMeasurement.setValue(measurement.value);
+        var updatedMeasurement = measurementRepository.save(existingMeasurement);
+        return MeasurementMapper.toDto(updatedMeasurement);
+    }
+
+    @Override
+    public void delete(Long measurementId, User loggedInClient) {
+        getMeasurementIfValid(measurementId, loggedInClient);
+        measurementRepository.deleteById(measurementId);
+    }
+
+    private Measurement getMeasurementIfValid(Long measurementId, User loggedInClient) {
+        var client = getActiveClient(loggedInClient);
+        var existingMeasurement = measurementRepository.findById(measurementId).orElse(null);
+        if(existingMeasurement == null) throw new ResourceNotFoundException("Measurement not found with id " + measurementId);
+        if(existingMeasurement.device.getClient().getId() != client.getId()) {
+            throw new AccessDeniedException("Client does not have access for measurement: " + measurementId);
+        }
+        return existingMeasurement;
+    }
+
     private Device getActiveDevice(User loggedInDevice) {
         var device = deviceRepository.findOneByUserId(loggedInDevice.id).orElse(null);
         if(device == null) {
             throw new AccessDeniedException("Device not found");
         }
         return device;
+    }
+
+    private Client getActiveClient(User loggedInClient) {
+        var client = clientRepository.findByUserId(loggedInClient.id).orElse(null);
+        if(client == null) {
+            throw new AccessDeniedException("Client not found");
+        }
+        return client;
     }
 }

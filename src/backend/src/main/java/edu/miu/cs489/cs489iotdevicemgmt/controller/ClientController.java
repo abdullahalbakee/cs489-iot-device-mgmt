@@ -2,10 +2,8 @@ package edu.miu.cs489.cs489iotdevicemgmt.controller;
 
 import edu.miu.cs489.cs489iotdevicemgmt.dto.ClientDto;
 import edu.miu.cs489.cs489iotdevicemgmt.service.ClientService;
-import edu.miu.cs489.cs489iotdevicemgmt.service.security.JwtService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,7 +36,7 @@ public class ClientController {
     }
 
     @DeleteMapping("/{clientId}")
-    public ResponseEntity<?> delete(@PathVariable Long clientId) {
+    public ResponseEntity delete(@PathVariable Long clientId) {
         clientService.delete(clientId);
         return ResponseEntity.noContent().build();
     }
