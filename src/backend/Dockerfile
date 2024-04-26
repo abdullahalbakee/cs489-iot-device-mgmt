@@ -1,8 +1,8 @@
 FROM maven:3.9 AS build
 WORKDIR /app
-COPY pom.xml .
+COPY src/backend/pom.xml .
 RUN mvn dependency:go-offline -B
-COPY src ./src
+COPY src/backend/src ./src
 RUN mvn package -DskipTests
 
 FROM gcr.io/distroless/java17
