@@ -1,0 +1,8 @@
+Use cases:
+
+- Client should be able to create account
+- Admin should be able to manage clients
+- Admin and Client should be able to login to the system
+- Client should be able to create and manage devices
+- Device should be able to login to the system to add measurement data
+- Client should be able to manage measurement data created by their own devices
